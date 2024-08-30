@@ -41,10 +41,10 @@ class DynamicArray:
 
 
   def __setitem__(self, index: int, value: int) -> None:
-    if 0 <= index < self.user_len:
+    if 0 <= index < self.size():
       self.static_array[index] = value
-
-    raise IndexError("Index out of range") 
+    else:
+      raise IndexError("Index out of range") 
 
   
   def add_element(self, elem: int) -> None:
@@ -63,15 +63,15 @@ class DynamicArray:
 
   def remove_index(self,rm_index: int) -> None:
     if 0 <= rm_index < self.user_len:
-      self.static_array[rm_index:-1] = self.static_array[rm_index+1:]
+      self.static_array[rm_index:self.user_len - 1] = self.static_array[rm_index + 1:self.user_len]
       self.user_len -= 1
-      self.array_capacity -= 1
-
-    raise IndexError("Index out of range") 
+      self.static_array[self.user_len] = 0
+    else:
+      raise IndexError("Index out of range") 
   
 
   def remove_element(self, elem: int) -> bool:
-    for i in range(self.user_len):
+    for i in range(self.size()):
       if self.static_array[i] == elem:
         self.remove_index(i)
         return True
